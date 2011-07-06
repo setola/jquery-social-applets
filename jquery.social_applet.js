@@ -93,6 +93,17 @@
 		if(options) $.extend(settings,options);
 		
 		var that = $(this);
+		
+		var add_namespace = function(name,value){
+			if(document.namespaces){//IE7 is worst browser ever.
+				document.namespaces.add(name, value);
+			} else {
+				$('html').attr(
+					'xmlns:' + name,	
+					value
+				);
+			}
+		};
 
 		//include plusone.js from google asyncronly
 		if(settings.plusone){
@@ -125,6 +136,9 @@
 				g.src = 'http://connect.facebook.net/'+settings.facebook.lang+'/all.js#xfbml=1';
 				s.parentNode.insertBefore(g, s);
 			})(document, 'script');
+
+			add_namespace('fb','http://www.facebook.com/2008/fbml');
+			add_namespace('og','http://opengraphprotocol.org/schema/');
 			
 			$('body').prepend(
 				$('<div/>').attr({
@@ -177,11 +191,12 @@
 			if(typeof plusone_div.attr('data-callback')!='undefined')
 				settings.plusone.callback = plusone_div.attr('size-callback');
 			plusone_div.append(
-				$('<g:plusone/>').attr({
-					'size'				:	settings.plusone.size,
-					'count'				:	settings.plusone.count,
-					'href'				:	settings.plusone.href,
-					'callback'		:	settings.plusone.callback
+				$('<div/>').attr({
+					'class'						:	'g-plusone',
+					'data-size'				:	settings.plusone.size,
+					'data-count'			:	settings.plusone.count,
+					'data-href'				:	settings.plusone.href,
+					'data-callback'		:	settings.plusone.callback
 				})
 			);
 			each_that.find(settings.selectors.facebook).append(
