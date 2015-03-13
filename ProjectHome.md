@@ -1,0 +1,1 @@
+A simple jquery plugins providing an easy way to integrate some social networks applets in a webpage.
